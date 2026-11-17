@@ -1,16 +1,14 @@
-# React + Vite
+# NextStep: AI-Powered Adaptive Study Coach
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Final project for Essence of Product Design (BTech IT, CMR University).
 
-Currently, two official plugins are available:
+## Problem
+Students don't miss work because they forget dates. They freeze from decision
+overload, and one missed block breaks their whole plan.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Solution
+NextStep shows one clear next action (Focus Hub) and rebuilds the plan in one tap
+when life interrupts (Zero-Guilt Recalibrator).
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Status
+Work in progress.
