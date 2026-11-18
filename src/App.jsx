@@ -2,19 +2,58 @@ import { useState } from 'react'
 import { sampleTasks, STATUS } from './data/sampleTasks'
 import { getNextTask } from './logic/priority'
 import FocusCard from './components/FocusCard'
+import FocusSession from './components/FocusSession'
+import SessionComplete from './components/SessionComplete'
 
 const GAP_OPTIONS = [15, 30, 45, 60]
 
 function App() {
-  const [tasks] = useState(sampleTasks)
+  const [tasks, setTasks] = useState(sampleTasks)
   const [gapMinutes, setGapMinutes] = useState(45)
+  const [screen, setScreen] = useState('hub') // 'hub' | 'session' | 'complete'
+  const [activeTask, setActiveTask] = useState(null)
 
   const nextTask = getNextTask(tasks, gapMinutes)
   const todoCount = tasks.filter((t) => t.status === STATUS.TODO).length
   const hiddenCount = nextTask ? todoCount - 1 : todoCount
 
-  const handleStart = (task) => {
-    console.log('Start session for:', task.title) // real timer comes in Step 5
+  const startSession = (task) => {
+    setActiveTask(task)
+    setScreen('session')
+  }
+
+  const finishSession = () => {
+    // Copy every task; only the active one gets status 'done'
+    setTasks((prev) =>
+      prev.map((t) => (t.id === activeTask.id ? { ...t, status: STATUS.DONE } : t))
+    )
+    setScreen('complete')
+  }
+
+  if (screen === 'session') {
+    return (
+      <main>
+        <FocusSession
+          key={activeTask.id}
+          task={activeTask}
+          onDone={finishSession}
+          onExit={() => setScreen('hub')}
+        />
+      </main>
+    )
+  }
+
+  if (screen === 'complete') {
+    return (
+      <main>
+        <SessionComplete
+          doneTask={activeTask}
+          nextTask={nextTask}
+          onNext={startSession}
+          onBreak={() => setScreen('hub')}
+        />
+      </main>
+    )
   }
 
   return (
@@ -23,7 +62,7 @@ function App() {
         task={nextTask}
         gapMinutes={gapMinutes}
         hiddenCount={hiddenCount}
-        onStart={handleStart}
+        onStart={startSession}
       />
 
       <p style={{ marginTop: 32, fontSize: 12, color: '#94a3b8' }}>
