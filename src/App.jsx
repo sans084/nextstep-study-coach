@@ -1,25 +1,30 @@
 import { useState } from 'react'
 import { sampleTasks, STATUS } from './data/sampleTasks'
+import { ENERGY_OPTIONS } from './data/energy'
 import { getNextTask } from './logic/priority'
 import { buildRebalanceOptions, applyOption } from './logic/recalibrator'
 import FocusCard from './components/FocusCard'
 import FocusSession from './components/FocusSession'
 import SessionComplete from './components/SessionComplete'
 import Recalibrator from './components/Recalibrator'
+import EnergySheet from './components/EnergySheet'
 
 const GAP_OPTIONS = [15, 30, 45, 60]
 
 function App() {
   const [tasks, setTasks] = useState(sampleTasks)
   const [gapMinutes, setGapMinutes] = useState(45)
+  const [energy, setEnergy] = useState(null) // null = any
+  const [showEnergy, setShowEnergy] = useState(false)
   const [screen, setScreen] = useState('hub') // 'hub' | 'session' | 'complete' | 'recalibrate'
   const [activeTask, setActiveTask] = useState(null)
   const [missedTask, setMissedTask] = useState(null)
   const [notice, setNotice] = useState('')
 
-  const nextTask = getNextTask(tasks, gapMinutes)
+  const nextTask = getNextTask(tasks, gapMinutes, new Date(), energy)
   const todoCount = tasks.filter((t) => t.status === STATUS.TODO).length
   const hiddenCount = nextTask ? todoCount - 1 : todoCount
+  const energyLabel = ENERGY_OPTIONS.find((o) => o.id === energy)?.label ?? 'Any'
 
   const startSession = (task) => {
     setNotice('')
@@ -43,6 +48,11 @@ function App() {
     setTasks((prev) => applyOption(prev, missedTask, option))
     setNotice(`Plan updated: ${option.label}`)
     setScreen('hub')
+  }
+
+  const chooseEnergy = (level) => {
+    setEnergy(level)
+    setShowEnergy(false)
   }
 
   if (screen === 'session') {
@@ -96,7 +106,9 @@ function App() {
         task={nextTask}
         gapMinutes={gapMinutes}
         hiddenCount={hiddenCount}
+        energyLabel={energyLabel}
         onStart={startSession}
+        onChangeEnergy={() => setShowEnergy(true)}
         onLifeHappened={openRecalibrator}
       />
 
@@ -117,6 +129,10 @@ function App() {
           </button>
         ))}
       </div>
+
+      {showEnergy && (
+        <EnergySheet current={energy} onSelect={chooseEnergy} onClose={() => setShowEnergy(false)} />
+      )}
     </main>
   )
 }
