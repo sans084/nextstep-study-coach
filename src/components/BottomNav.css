@@ -1,0 +1,3 @@
+.nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 420px; display: flex; background: #1e293b; border-radius: 20px 20px 0 0; padding: 8px; gap: 4px; z-index: 5; }
+.nav__tab { flex: 1; padding: 14px 4px; font-size: 13px; font-weight: 700; color: #94a3b8; background: none; border-radius: 12px; }
+.nav__tab--on { color: #fff; background: #4f46e5; }
