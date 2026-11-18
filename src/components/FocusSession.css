@@ -1,0 +1,13 @@
+.session { text-align: center; }
+.session__label { margin: 0 0 8px; font-size: 12px; font-weight: 700; color: #38bdf8; letter-spacing: 0.05em; }
+.session__task { margin: 0; font-size: 22px; }
+.session__ring { width: 220px; height: 220px; margin: 28px auto 12px; border-radius: 50%; display: grid; place-items: center; }
+.session__inner { width: 190px; height: 190px; border-radius: 50%; background: #0f172a; display: grid; place-items: center; }
+.session__time { font-size: 48px; font-weight: 700; }
+.session__sub { margin: 0 0 24px; font-size: 14px; color: #94a3b8; }
+.session__buttons { display: flex; gap: 12px; }
+.session__btn { flex: 1; padding: 16px; font-size: 15px; font-weight: 700; color: #fff; border-radius: 12px; }
+.session__btn--pause { background: #334155; }
+.session__btn--done { background: #059669; }
+.session__btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.session__link { display: block; width: 100%; margin-top: 14px; padding: 8px; font-size: 13px; color: #94a3b8; background: none; }
