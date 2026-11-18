@@ -1,0 +1,17 @@
+.add__title { margin: 0 0 4px; font-size: 22px; }
+.add__sub { margin: 0 0 20px; font-size: 13px; color: #94a3b8; }
+.add__form { display: flex; flex-direction: column; gap: 14px; }
+.add__form label { display: flex; flex-direction: column; gap: 6px; flex: 1; font-size: 13px; color: #cbd5e1; }
+.add__form input, .add__form select { padding: 12px; font-size: 15px; font-family: inherit; color: #f8fafc; background: #1e293b; border: 1px solid #334155; border-radius: 10px; }
+.add__form input:focus, .add__form select:focus { outline: 2px solid #6366f1; }
+.add__row { display: flex; gap: 12px; }
+.add__primary { width: 100%; margin-top: 8px; padding: 16px; font-size: 14px; font-weight: 700; color: #fff; background: #4f46e5; border-radius: 12px; }
+.add__primary:disabled { opacity: 0.5; cursor: not-allowed; }
+.add__step { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; padding: 14px; background: #1e293b; border-radius: 14px; }
+.add__stepmain { flex: 1; }
+.add__stepname { margin: 0 0 4px; font-size: 14px; font-weight: 700; }
+.add__stepmeta { margin: 0; font-size: 12px; color: #94a3b8; }
+.add__min { flex: none; font-size: 13px; font-weight: 700; color: #a5b4fc; }
+.add__remove { flex: none; width: 28px; height: 28px; color: #94a3b8; background: #334155; border-radius: 50%; }
+.add__note { margin: 12px 0; font-size: 13px; color: #fbbf24; }
+.add__link { display: block; width: 100%; margin-top: 12px; padding: 8px; font-size: 14px; color: #94a3b8; background: none; }
