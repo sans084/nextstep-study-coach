@@ -9,7 +9,7 @@ function dueLabel(deadline) {
   return `Due in ${days} days`
 }
 
-export default function FocusCard({ task, gapMinutes, hiddenCount, onStart }) {
+export default function FocusCard({ task, gapMinutes, hiddenCount, onStart, onLifeHappened }) {
   // Nothing fits in the free gap
   if (!task) {
     return (
@@ -45,7 +45,9 @@ export default function FocusCard({ task, gapMinutes, hiddenCount, onStart }) {
 
       <div className="hub__actions">
         <button className="hub__chip">Change Energy</button>
-        <button className="hub__chip">Life Happened</button>
+        <button className="hub__chip" onClick={() => onLifeHappened(task)}>
+            Life Happened
+        </button>
       </div>
 
       <p className="hub__hidden">{hiddenCount} other tasks hidden</p>
