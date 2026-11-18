@@ -1,5 +1,6 @@
 import { STATUS } from '../data/sampleTasks.js'
 import { toDateString } from './recalibrator.js'
+import { ENERGY_RANK } from '../data/energy.js'
 
 const MS_PER_DAY = 24 * 60 * 60 * 1000
 
@@ -23,22 +24,23 @@ export function getPriorityScore(task, gapMinutes, today = new Date()) {
   return { task, daysLeft, urgency, score: (urgency * task.weight) / gapMinutes }
 }
 
-// Eligible tasks (not done, scheduled for today or earlier, fits the gap), best first.
-export function rankTasks(tasks, gapMinutes, today = new Date()) {
+// Eligible tasks, best first. 'energy' is optional (null = any energy level).
+export function rankTasks(tasks, gapMinutes, today = new Date(), energy = null) {
   const todayString = toDateString(today)
   return tasks
     .filter(
       (t) =>
         t.status === STATUS.TODO &&
         (!t.scheduledDate || t.scheduledDate <= todayString) &&
-        t.estimatedMinutes <= gapMinutes
+        t.estimatedMinutes <= gapMinutes &&
+        (!energy || (ENERGY_RANK[t.energy] ?? 1) <= ENERGY_RANK[energy])
     )
     .map((t) => getPriorityScore(t, gapMinutes, today))
     .sort((a, b) => b.score - a.score)
 }
 
 // The single recommended task, or null if nothing fits.
-export function getNextTask(tasks, gapMinutes, today = new Date()) {
-  const ranked = rankTasks(tasks, gapMinutes, today)
+export function getNextTask(tasks, gapMinutes, today = new Date(), energy = null) {
+  const ranked = rankTasks(tasks, gapMinutes, today, energy)
   return ranked.length > 0 ? ranked[0].task : null
 }
