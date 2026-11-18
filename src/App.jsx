@@ -12,13 +12,14 @@ import BottomNav from './components/BottomNav'
 import PlanScreen from './components/PlanScreen'
 import CoursesScreen from './components/CoursesScreen'
 import InsightsScreen from './components/InsightsScreen'
+import usePersistentState from './hooks/usePersistentState'
 
 const GAP_OPTIONS = [15, 30, 45, 60]
 
 function App() {
-  const [tasks, setTasks] = useState(sampleTasks)
-  const [gapMinutes, setGapMinutes] = useState(45)
-  const [energy, setEnergy] = useState(null) // null = any
+  const [tasks, setTasks] = usePersistentState('nextstep:tasks:v1', sampleTasks)
+  const [gapMinutes, setGapMinutes] = usePersistentState('nextstep:gap:v1', 45)
+  const [energy, setEnergy] = usePersistentState('nextstep:energy:v1', null)
   const [showEnergy, setShowEnergy] = useState(false)
   const [tab, setTab] = useState('today') // 'today' | 'plan' | 'courses' | 'insights'
   const [screen, setScreen] = useState('hub') // 'hub' | 'session' | 'complete' | 'recalibrate'
@@ -63,6 +64,13 @@ function App() {
   const changeTab = (id) => {
     setNotice('')
     setTab(id)
+  }
+
+  const resetDemo = () => {
+    setTasks(sampleTasks)
+    setGapMinutes(45)
+    setEnergy(null)
+    setNotice('Demo data reset')
   }
 
   if (screen === 'session') {
@@ -141,6 +149,12 @@ function App() {
               </button>
             ))}
           </div>
+          <button
+            onClick={resetDemo}
+            style={{ display: 'block', margin: '24px auto 0', fontSize: 12, color: '#64748b', background: 'none' }}
+          >
+            Reset demo data
+          </button>
         </>
       )}
 
