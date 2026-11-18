@@ -1,4 +1,5 @@
 import { STATUS } from '../data/sampleTasks.js'
+import { toDateString } from './recalibrator.js'
 
 const MS_PER_DAY = 24 * 60 * 60 * 1000
 
@@ -22,10 +23,16 @@ export function getPriorityScore(task, gapMinutes, today = new Date()) {
   return { task, daysLeft, urgency, score: (urgency * task.weight) / gapMinutes }
 }
 
-// Eligible tasks (not done, fits the gap), best first.
+// Eligible tasks (not done, scheduled for today or earlier, fits the gap), best first.
 export function rankTasks(tasks, gapMinutes, today = new Date()) {
+  const todayString = toDateString(today)
   return tasks
-    .filter((t) => t.status === STATUS.TODO && t.estimatedMinutes <= gapMinutes)
+    .filter(
+      (t) =>
+        t.status === STATUS.TODO &&
+        (!t.scheduledDate || t.scheduledDate <= todayString) &&
+        t.estimatedMinutes <= gapMinutes
+    )
     .map((t) => getPriorityScore(t, gapMinutes, today))
     .sort((a, b) => b.score - a.score)
 }
