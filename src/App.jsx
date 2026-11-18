@@ -13,6 +13,7 @@ import PlanScreen from './components/PlanScreen'
 import CoursesScreen from './components/CoursesScreen'
 import InsightsScreen from './components/InsightsScreen'
 import usePersistentState from './hooks/usePersistentState'
+import AddWorkScreen from './components/AddWorkScreen'
 
 const GAP_OPTIONS = [15, 30, 45, 60]
 
@@ -64,6 +65,12 @@ function App() {
   const changeTab = (id) => {
     setNotice('')
     setTab(id)
+  }
+
+  const addTasks = (newTasks, message) => {
+    setTasks((prev) => [...prev, ...newTasks])
+    setNotice(message)
+    setTab('today')
   }
 
   const resetDemo = () => {
@@ -159,6 +166,7 @@ function App() {
       )}
 
       {tab === 'plan' && <PlanScreen tasks={tasks} />}
+      {tab === 'add' && <AddWorkScreen tasks={tasks} onAdd={addTasks} />}
       {tab === 'courses' && <CoursesScreen tasks={tasks} />}
       {tab === 'insights' && <InsightsScreen tasks={tasks} />}
 

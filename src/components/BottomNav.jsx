@@ -2,6 +2,7 @@ import './BottomNav.css'
 
 const TABS = [
   { id: 'today', label: 'Today' },
+  { id: 'add', label: '+ Add' },
   { id: 'plan', label: 'Plan' },
   { id: 'courses', label: 'Courses' },
   { id: 'insights', label: 'Insights' },
