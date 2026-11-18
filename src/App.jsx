@@ -8,6 +8,10 @@ import FocusSession from './components/FocusSession'
 import SessionComplete from './components/SessionComplete'
 import Recalibrator from './components/Recalibrator'
 import EnergySheet from './components/EnergySheet'
+import BottomNav from './components/BottomNav'
+import PlanScreen from './components/PlanScreen'
+import CoursesScreen from './components/CoursesScreen'
+import InsightsScreen from './components/InsightsScreen'
 
 const GAP_OPTIONS = [15, 30, 45, 60]
 
@@ -16,6 +20,7 @@ function App() {
   const [gapMinutes, setGapMinutes] = useState(45)
   const [energy, setEnergy] = useState(null) // null = any
   const [showEnergy, setShowEnergy] = useState(false)
+  const [tab, setTab] = useState('today') // 'today' | 'plan' | 'courses' | 'insights'
   const [screen, setScreen] = useState('hub') // 'hub' | 'session' | 'complete' | 'recalibrate'
   const [activeTask, setActiveTask] = useState(null)
   const [missedTask, setMissedTask] = useState(null)
@@ -53,6 +58,11 @@ function App() {
   const chooseEnergy = (level) => {
     setEnergy(level)
     setShowEnergy(false)
+  }
+
+  const changeTab = (id) => {
+    setNotice('')
+    setTab(id)
   }
 
   if (screen === 'session') {
@@ -96,39 +106,49 @@ function App() {
 
   return (
     <main>
-      {notice && (
-        <p style={{ margin: '0 0 16px', padding: 12, borderRadius: 12, fontSize: 14, background: '#064e3b', color: '#d1fae5' }}>
-          {notice}
-        </p>
+      {tab === 'today' && (
+        <>
+          {notice && (
+            <p style={{ margin: '0 0 16px', padding: 12, borderRadius: 12, fontSize: 14, background: '#064e3b', color: '#d1fae5' }}>
+              {notice}
+            </p>
+          )}
+
+          <FocusCard
+            task={nextTask}
+            gapMinutes={gapMinutes}
+            hiddenCount={hiddenCount}
+            energyLabel={energyLabel}
+            onStart={startSession}
+            onChangeEnergy={() => setShowEnergy(true)}
+            onLifeHappened={openRecalibrator}
+          />
+
+          <p style={{ marginTop: 32, fontSize: 12, color: '#94a3b8' }}>
+            DEMO: how much free time do you have?
+          </p>
+          <div style={{ display: 'flex', gap: 8 }}>
+            {GAP_OPTIONS.map((g) => (
+              <button
+                key={g}
+                onClick={() => setGapMinutes(g)}
+                style={{
+                  flex: 1, padding: 10, borderRadius: 10, color: '#fff',
+                  background: g === gapMinutes ? '#4f46e5' : '#1e293b',
+                }}
+              >
+                {g} min
+              </button>
+            ))}
+          </div>
+        </>
       )}
 
-      <FocusCard
-        task={nextTask}
-        gapMinutes={gapMinutes}
-        hiddenCount={hiddenCount}
-        energyLabel={energyLabel}
-        onStart={startSession}
-        onChangeEnergy={() => setShowEnergy(true)}
-        onLifeHappened={openRecalibrator}
-      />
+      {tab === 'plan' && <PlanScreen tasks={tasks} />}
+      {tab === 'courses' && <CoursesScreen tasks={tasks} />}
+      {tab === 'insights' && <InsightsScreen tasks={tasks} />}
 
-      <p style={{ marginTop: 32, fontSize: 12, color: '#94a3b8' }}>
-        DEMO: how much free time do you have?
-      </p>
-      <div style={{ display: 'flex', gap: 8 }}>
-        {GAP_OPTIONS.map((g) => (
-          <button
-            key={g}
-            onClick={() => setGapMinutes(g)}
-            style={{
-              flex: 1, padding: 10, borderRadius: 10, color: '#fff',
-              background: g === gapMinutes ? '#4f46e5' : '#1e293b',
-            }}
-          >
-            {g} min
-          </button>
-        ))}
-      </div>
+      <BottomNav tab={tab} onChange={changeTab} />
 
       {showEnergy && (
         <EnergySheet current={energy} onSelect={chooseEnergy} onClose={() => setShowEnergy(false)} />
