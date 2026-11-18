@@ -1,0 +1,13 @@
+.hub { background: #0f172a; }
+.hub__top { display: flex; justify-content: space-between; margin-bottom: 12px; }
+.hub__label { margin: 0; font-size: 12px; font-weight: 700; color: #38bdf8; letter-spacing: 0.05em; }
+.hub__gap { margin: 0; font-size: 13px; color: #94a3b8; }
+.hub__card { background: #1e293b; border-radius: 20px; padding: 24px; }
+.hub__course { margin: 0 0 8px; font-size: 12px; font-weight: 700; color: #a5b4fc; }
+.hub__title { margin: 0 0 8px; font-size: 26px; line-height: 1.2; }
+.hub__meta { margin: 0 0 20px; font-size: 14px; color: #cbd5e1; }
+.hub__start { width: 100%; padding: 16px; font-size: 15px; font-weight: 700; color: #fff; background: #4f46e5; border-radius: 12px; }
+.hub__start:hover { background: #4338ca; }
+.hub__actions { display: flex; gap: 12px; margin-top: 12px; }
+.hub__chip { flex: 1; padding: 14px; font-size: 14px; color: #e2e8f0; background: #1e293b; border-radius: 12px; }
+.hub__hidden { margin: 16px 0 0; text-align: center; font-size: 13px; font-style: italic; color: #64748b; }
