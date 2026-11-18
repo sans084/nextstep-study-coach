@@ -1,0 +1,10 @@
+.done { text-align: center; padding-top: 24px; }
+.done__check { width: 80px; height: 80px; margin: 0 auto 16px; border-radius: 50%; background: #059669; font-size: 40px; line-height: 80px; }
+.done__heading { margin: 0 0 8px; font-size: 28px; }
+.done__sub { margin: 0 0 24px; font-size: 14px; color: #94a3b8; }
+.done__next { text-align: left; background: #1e293b; border-radius: 16px; padding: 20px; margin-bottom: 16px; }
+.done__label { margin: 0 0 6px; font-size: 12px; font-weight: 700; color: #a5b4fc; }
+.done__title { margin: 0 0 4px; font-size: 18px; font-weight: 700; }
+.done__meta { margin: 0; font-size: 13px; color: #94a3b8; }
+.done__btn { width: 100%; padding: 16px; font-size: 15px; font-weight: 700; color: #fff; background: #4f46e5; border-radius: 12px; }
+.done__link { display: block; width: 100%; margin-top: 14px; padding: 8px; font-size: 14px; color: #94a3b8; background: none; }
