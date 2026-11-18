@@ -35,22 +35,22 @@ export function freeMinutes(tasks, dateString) {
   return capacity - plannedMinutes(tasks, dateString)
 }
 
-// Days we may reschedule onto: tomorrow up to the deadline.
-// If that leaves nothing, fall back to the next 3 days and flag it as late.
-function candidateDays(task, today) {
+// Days we may reschedule onto. Normally: tomorrow up to the deadline.
+// With allowLate: the first 3 days after the deadline (flagged as late).
+function candidateDays(task, today, allowLate = false) {
   const todayString = toDateString(today)
   const next7 = [1, 2, 3, 4, 5, 6, 7].map((n) => addDays(todayString, n))
-  const beforeDeadline = next7.filter((d) => d <= task.deadline)
-  return beforeDeadline.length > 0
-    ? { days: beforeDeadline, late: false }
-    : { days: next7.slice(0, 3), late: true }
+  if (!allowLate) {
+    return { days: next7.filter((d) => d <= task.deadline), late: false }
+  }
+  const afterDeadline = next7.filter((d) => d > task.deadline)
+  return { days: (afterDeadline.length > 0 ? afterDeadline : next7).slice(0, 3), late: true }
 }
 
-// ---------- the rebalance options ----------
-export function buildRebalanceOptions(missed, tasks, today = new Date()) {
-  const others = tasks.filter((t) => t.id !== missed.id) // missed task is leaving its slot
-  const { days, late } = candidateDays(missed, today)
+// Build spread / move options for a given set of candidate days
+function optionsFor(missed, others, { days, late }) {
   const options = []
+  const suffix = late ? ' (after the deadline)' : ''
 
   // Option A: spread across two days
   const half = Math.ceil(missed.estimatedMinutes / 2)
@@ -59,7 +59,7 @@ export function buildRebalanceOptions(missed, tasks, today = new Date()) {
     const [d1, d2] = roomy
     options.push({
       id: 'spread',
-      label: `Spread across ${dayName(d1)} & ${dayName(d2)} (+${half}m/day)`,
+      label: `Spread across ${dayName(d1)} & ${dayName(d2)} (+${half}m/day)${suffix}`,
       placements: [
         { date: d1, minutes: half },
         { date: d2, minutes: missed.estimatedMinutes - half },
@@ -74,14 +74,22 @@ export function buildRebalanceOptions(missed, tasks, today = new Date()) {
     const best = fits.reduce((a, b) => (freeMinutes(others, b) > freeMinutes(others, a) ? b : a))
     options.push({
       id: 'move',
-      label: `Move to ${dayName(best)} (${freeMinutes(others, best)}m free)`,
+      label: `Move to ${dayName(best)} (${freeMinutes(others, best)}m free)${suffix}`,
       placements: [{ date: best, minutes: missed.estimatedMinutes }],
       late,
     })
   }
-
   return options
 }
+
+export function buildRebalanceOptions(missed, tasks, today = new Date()) {
+  const others = tasks.filter((t) => t.id !== missed.id) // missed task is leaving its slot
+
+  // First try to keep the deadline; only if nothing fits, offer late options
+  const onTime = optionsFor(missed, others, candidateDays(missed, today, false))
+  if (onTime.length > 0) return onTime
+  return optionsFor(missed, others, candidateDays(missed, today, true))
+} 
 
 // ---------- applying the chosen option ----------
 export function applyOption(tasks, missed, option) {
