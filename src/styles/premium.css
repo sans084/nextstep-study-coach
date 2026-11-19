@@ -1,0 +1,43 @@
+/* ===== Premium theme layer (loaded last, refines the base styles) ===== */
+:root {
+  --font-body: 'Plus Jakarta Sans Variable', 'Segoe UI', system-ui, sans-serif;
+  --font-display: 'Space Grotesk Variable', 'Segoe UI', system-ui, sans-serif;
+  --bg: #070b17;
+  --emerald: #10b981;
+  --glass: linear-gradient(145deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.025));
+  --glass-border: rgba(255, 255, 255, 0.09);
+  --shadow-card: 0 12px 32px rgba(2, 6, 23, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  --btn-grad: linear-gradient(135deg, #6366f1 0%, #4f46e5 45%, #7c3aed 100%);
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  font-family: var(--font-body);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, .hub__title, .session__time, .done__heading {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+}
+
+/* Slowly drifting colour glow behind everything */
+body::before {
+  content: '';
+  position: fixed;
+  inset: -20%;
+  z-index: -1;
+  pointer-events: none;
+  will-change: transform;
+  filter: blur(40px);
+  background:
+    radial-gradient(40% 35% at 20% 15%, rgba(99, 102, 241, 0.35), transparent 70%),
+    radial-gradient(35% 30% at 85% 25%, rgba(139, 92, 246, 0.28), transparent 70%),
+    radial-gradient(40% 35% at 60% 95%, rgba(56, 189, 248, 0.18), transparent 70%);
+  animation: aurora 22s ease-in-out infinite alternate;
+}
+@keyframes aurora {
+  from { transform: translate3d(-3%, -2%, 0) scale(1); }
+  to { transform: translate3d(3%, 3%, 0) scale(1.12); }
+}
+
+/* FocusCard.css paints the hub solid navy, which would hide the glow */
+.hub { background: transparent; }
