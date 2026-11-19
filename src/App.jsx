@@ -14,11 +14,13 @@ import CoursesScreen from './components/CoursesScreen'
 import InsightsScreen from './components/InsightsScreen'
 import usePersistentState from './hooks/usePersistentState'
 import AddWorkScreen from './components/AddWorkScreen'
+import { sampleTasks, sampleCourses, STATUS } from './data/sampleTasks'
 
 const GAP_OPTIONS = [15, 30, 45, 60]
 
 function App() {
   const [tasks, setTasks] = usePersistentState('nextstep:tasks:v1', sampleTasks)
+  const [courses, setCourses] = usePersistentState('nextstep:courses:v1', sampleCourses)
   const [gapMinutes, setGapMinutes] = usePersistentState('nextstep:gap:v1', 45)
   const [energy, setEnergy] = usePersistentState('nextstep:energy:v1', null)
   const [showEnergy, setShowEnergy] = useState(false)
@@ -67,9 +69,23 @@ function App() {
     setTab(id)
   }
 
+  const addCourse = (name) => setCourses((prev) => [...prev, name])
+  
+  const renameCourse = (oldName, newName) => {
+    setCourses((prev) => prev.map((c) => (c === oldName ? newName : c)))
+    setTasks((prev) => prev.map((t) => (t.course === oldName ? { ...t, course: newName } : t)))
+  }
+
+  const deleteCourse = (name) => {
+    setCourses((prev) => prev.filter((c) => c !== name))
+    setTasks((prev) => prev.filter((t) => t.course !== name))
+  }
+
   const addTasks = (newTasks, message) => {
     setTasks((prev) => [...prev, ...newTasks])
-    setNotice(message)
+    const course = newTasks[0]?.course
+    if (course) setCourses((prev) => (prev.includes(course) ? prev : [...prev, course]))
+      setNotice(message)
     setTab('today')
   }
 
@@ -78,6 +94,7 @@ function App() {
     setGapMinutes(45)
     setEnergy(null)
     setNotice('Demo data reset')
+    setCourses(sampleCourses)
   }
 
   if (screen === 'session') {
@@ -166,8 +183,16 @@ function App() {
       )}
 
       {tab === 'plan' && <PlanScreen tasks={tasks} />}
-      {tab === 'add' && <AddWorkScreen tasks={tasks} onAdd={addTasks} />}
-      {tab === 'courses' && <CoursesScreen tasks={tasks} />}
+      {tab === 'courses' && (
+        <CoursesScreen
+          tasks={tasks}
+          courses={courses}
+          onAdd={addCourse}
+          onRename={renameCourse}
+          onDelete={deleteCourse}
+        />
+      )}
+      {tab === 'add' && <AddWorkScreen tasks={tasks} courses={courses} onAdd={addTasks} />}
       {tab === 'insights' && <InsightsScreen tasks={tasks} />}
 
       <BottomNav tab={tab} onChange={changeTab} />

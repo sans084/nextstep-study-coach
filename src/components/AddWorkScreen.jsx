@@ -5,7 +5,7 @@ import './AddWorkScreen.css'
 
 const HOURS = [1, 2, 3, 4, 6, 8]
 
-export default function AddWorkScreen({ tasks, onAdd }) {
+export default function AddWorkScreen({ tasks, courses: courseList = [], onAdd }) {
   const today = toDateString(new Date())
   const [form, setForm] = useState({
     title: '', course: '', deadline: addDays(today, 5), weight: 20, type: 'report', hours: 3,
@@ -13,7 +13,7 @@ export default function AddWorkScreen({ tasks, onAdd }) {
   const [steps, setSteps] = useState(null) // null = form view, array = review view
 
   const update = (field) => (e) => setForm({ ...form, [field]: e.target.value })
-  const courses = [...new Set(tasks.map((t) => t.course))]
+  const courses = [...new Set([...courseList, ...tasks.map((t) => t.course)])]
 
   const generate = (e) => {
     e.preventDefault()
