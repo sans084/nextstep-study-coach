@@ -36,13 +36,16 @@ export function loadOn(tasks, dateString) {
     .reduce((sum, t) => sum + t.estimatedMinutes, 0)
 }
 
-// One summary per course: progress, next deadline, tasks left
-export function getCourseSummaries(tasks) {
+// One summary per course. Courses with no tasks still appear (0%).
+export function getCourseSummaries(tasks, courseNames = []) {
+  const blank = (course) => ({
+    course, totalMinutes: 0, doneMinutes: 0, todoCount: 0, nextDeadline: null,
+  })
   const byCourse = {}
+  for (const name of courseNames) byCourse[name] = blank(name)
+
   for (const t of counted(tasks)) {
-    const c = (byCourse[t.course] ??= {
-      course: t.course, totalMinutes: 0, doneMinutes: 0, todoCount: 0, nextDeadline: null,
-    })
+    const c = (byCourse[t.course] ??= blank(t.course))
     c.totalMinutes += t.estimatedMinutes
     if (t.status === STATUS.DONE) {
       c.doneMinutes += t.estimatedMinutes
@@ -51,8 +54,12 @@ export function getCourseSummaries(tasks) {
       if (!c.nextDeadline || t.deadline < c.nextDeadline) c.nextDeadline = t.deadline
     }
   }
+
   return Object.values(byCourse)
-    .map((c) => ({ ...c, percent: Math.round((100 * c.doneMinutes) / c.totalMinutes) }))
+    .map((c) => ({
+      ...c,
+      percent: c.totalMinutes === 0 ? 0 : Math.round((100 * c.doneMinutes) / c.totalMinutes),
+    }))
     .sort((a, b) => (a.nextDeadline ?? '9999').localeCompare(b.nextDeadline ?? '9999'))
 }
 

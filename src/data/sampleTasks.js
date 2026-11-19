@@ -25,3 +25,6 @@ export const sampleTasks = [
   { id: 't7', title: 'Flashcards: Normalization', course: 'DBMS', deadline: daysFromNow(5), weight: 5, estimatedMinutes: 12, status: STATUS.TODO, scheduledDate: daysFromNow(4), energy: 'low' },
   { id: 't8', title: 'Java Lab Record', course: 'Java OOPs', deadline: daysFromNow(7), weight: 20, estimatedMinutes: 45, status: STATUS.TODO, scheduledDate: daysFromNow(5), energy: 'high' },
 ]
+
+// The starting course list, taken from the sample tasks
+export const sampleCourses = [...new Set(sampleTasks.map((t) => t.course))]
