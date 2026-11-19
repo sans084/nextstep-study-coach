@@ -1,173 +1,193 @@
-/* ===== Premium theme layer (loaded last, refines the base styles) ===== */
+/* ===== NextStep light theme: warm alabaster, sage, slate blue, ochre ===== */
 :root {
   --font-body: 'Plus Jakarta Sans Variable', 'Segoe UI', system-ui, sans-serif;
-  --font-display: 'Space Grotesk Variable', 'Segoe UI', system-ui, sans-serif;
-  --bg: #070b17;
-  --emerald: #10b981;
-  --glass: linear-gradient(145deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.025));
-  --glass-border: rgba(255, 255, 255, 0.09);
-  --shadow-card: 0 12px 32px rgba(2, 6, 23, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.06);
-  --btn-grad: linear-gradient(135deg, #6366f1 0%, #4f46e5 45%, #7c3aed 100%);
+  --font-display: 'Plus Jakarta Sans Variable', 'Segoe UI', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, Consolas, monospace;
+
+  --canvas: #FAF9F6;       /* main background */
+  --card: #FFFFFF;         /* cards and containers */
+  --border: #E5E5E0;       /* subtle borders */
+  --sage: #4A7C59;         /* primary buttons and nav */
+  --sage-dark: #3D6649;
+  --sage-soft: #E8F0EA;
+  --slate: #4A6FA5;        /* focus timer */
+  --slate-soft: #E6ECF5;
+  --ochre: #E09F3E;        /* due soon and priority */
+  --ochre-soft: #FBF1DF;
+  --ochre-text: #8A5A12;   /* readable text on ochre-soft */
+  --text: #2B2B28;
+  --muted: #6B6B63;
+  --track: #EDEBE4;
   --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  color-scheme: light;
   font-family: var(--font-body);
-  background: var(--bg);
+  color: var(--text);
+  background: var(--canvas);
   -webkit-font-smoothing: antialiased;
 }
+body { background: var(--canvas); color: var(--text); }
 
-h1, h2, h3, .hub__title, .session__time, .done__heading {
+h1, h2, h3, .hub__title, .done__heading {
   font-family: var(--font-display);
+  font-weight: 700;
   letter-spacing: -0.02em;
 }
 
-/* Slowly drifting colour glow behind everything */
-body::before {
-  content: '';
-  position: fixed;
-  inset: -20%;
-  z-index: -1;
-  pointer-events: none;
-  will-change: transform;
-  filter: blur(40px);
-  background:
-    radial-gradient(40% 35% at 20% 15%, rgba(99, 102, 241, 0.35), transparent 70%),
-    radial-gradient(35% 30% at 85% 25%, rgba(139, 92, 246, 0.28), transparent 70%),
-    radial-gradient(40% 35% at 60% 95%, rgba(56, 189, 248, 0.18), transparent 70%);
-  animation: aurora 22s ease-in-out infinite alternate;
-}
-@keyframes aurora {
-  from { transform: translate3d(-3%, -2%, 0) scale(1); }
-  to { transform: translate3d(3%, 3%, 0) scale(1.12); }
+/* Numbers use the monospace font */
+.session__time, .plan__min, .add__min, .ins__tile strong, .courses__percent,
+.hub__gap, .plan__day strong, .brand__date {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
 }
 
-/* FocusCard.css paints the hub solid navy, which would hide the glow */
+/* ---------- Brand header ---------- */
+.brand { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 20px; }
+.brand__logo { font-size: 22px; font-weight: 800; letter-spacing: -0.03em; color: var(--sage); }
+.brand__date { font-size: 12px; color: var(--muted); }
+
+/* ---------- Notice and demo controls (moved out of inline styles) ---------- */
+.notice { margin: 0 0 16px; padding: 12px 14px; border-radius: 12px; font-size: 14px; background: var(--sage-soft); color: #2F5A3D; border: 1px solid #C9DCCE; }
+.demo__label { margin: 32px 0 8px; font-size: 12px; color: var(--muted); }
+.demo__gaps { display: flex; gap: 8px; }
+.demo__chip { flex: 1; padding: 10px; font-size: 13px; color: var(--text); background: var(--card); border: 1px solid var(--border); border-radius: 10px; }
+.demo__chip--on { color: #fff; background: var(--sage); border-color: var(--sage); }
+.demo__reset { display: block; margin: 24px auto 0; font-size: 12px; color: var(--muted); background: none; }
+
+/* ---------- Focus Hub ---------- */
 .hub { background: transparent; }
+.hub__label { display: flex; align-items: center; gap: 8px; color: var(--sage); }
+.hub__label::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--sage); animation: ping 2s ease-out infinite; }
+.hub__gap { color: var(--muted); }
+.hub__card { padding: 28px; background: var(--card); border: 1px solid var(--border); border-radius: 20px; box-shadow: 0 1px 2px rgba(60, 60, 40, 0.05); animation: cardIn 0.5s var(--ease) backwards; }
+.hub__course { color: var(--muted); letter-spacing: 0.04em; }
+.hub__title { color: var(--text); }
+.hub__meta { margin-bottom: 12px; color: var(--muted); }
+.hub__tags { margin: 0 0 20px; }
+.hub__hidden { color: var(--muted); }
+.hub__chip { color: var(--text); background: var(--card); border: 1px solid var(--border); }
 
-/* ---------- Glass surfaces ---------- */
-.hub__card, .hub__chip, .done__next, .plan__task, .plan__day, .courses__card,
-.ins__tile, .ins__insight, .add__step, .courses__confirm {
-  background: var(--glass);
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--shadow-card);
-  -webkit-backdrop-filter: blur(16px);
-  backdrop-filter: blur(16px);
-}
-.plan__day--on {
-  background: var(--btn-grad);
-  border-color: rgba(255, 255, 255, 0.2);
-  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.45);
-}
+/* Due soon / priority tag in muted ochre */
+.tag { display: inline-block; padding: 5px 12px; font-size: 12px; font-weight: 700; color: var(--muted); background: #F1F0EA; border: 1px solid var(--border); border-radius: 999px; }
+.tag--soon { color: var(--ochre-text); background: var(--ochre-soft); border-color: rgba(224, 159, 62, 0.55); }
 
-.hub__card { position: relative; overflow: hidden; padding: 28px; border-radius: 24px; }
-.hub__card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: radial-gradient(120% 80% at 0% 0%, rgba(99, 102, 241, 0.22), transparent 60%);
+/* ---------- Primary buttons: sage green ---------- */
+.hub__start, .add__primary, .done__btn, .courses__add button, .courses__btn--primary, .recal__confirm, .session__btn--done {
+  color: #fff;
+  background: var(--sage);
+  box-shadow: 0 6px 16px rgba(74, 124, 89, 0.25);
 }
-.hub__card > * { position: relative; }
-.hub__chip, .courses__card, .plan__task, .ins__tile { border-radius: 16px; }
-
-/* ---------- Gradient buttons with a glow ---------- */
-.hub__start, .add__primary, .done__btn, .courses__add button,
-.courses__btn--primary, .nav__tab--on {
-  background: var(--btn-grad);
-  box-shadow: 0 10px 28px rgba(99, 102, 241, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+:is(.hub__start, .add__primary, .done__btn, .courses__add button, .courses__btn--primary, .recal__confirm, .session__btn--done):hover:not(:disabled) {
+  background: var(--sage-dark);
+  transform: translateY(-1px);
 }
-:is(.hub__start, .add__primary, .done__btn, .courses__add button, .courses__btn--primary):hover:not(:disabled) {
-  background: var(--btn-grad);
-  transform: translateY(-2px);
-  box-shadow: 0 14px 36px rgba(99, 102, 241, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.3);
-}
-.recal__confirm {
-  background: linear-gradient(135deg, #10b981, #059669);
-  box-shadow: 0 10px 28px rgba(16, 185, 129, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.25);
-}
-
-/* A light sweep across the main button */
 .hub__start { position: relative; overflow: hidden; border-radius: 14px; letter-spacing: 0.04em; }
-.hub__start::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -60%;
-  width: 40%;
-  height: 100%;
-  pointer-events: none;
-  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.35), transparent);
-  transform: skewX(-20deg);
-  animation: sheen 4.5s ease-in-out infinite;
-}
-@keyframes sheen {
-  0%, 60% { left: -60%; }
-  100% { left: 140%; }
-}
+.hub__start::after { content: ''; position: absolute; top: 0; left: -60%; width: 40%; height: 100%; pointer-events: none; background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.28), transparent); transform: skewX(-20deg); animation: sheen 4.5s ease-in-out infinite; }
+@keyframes sheen { 0%, 60% { left: -60%; } 100% { left: 140%; } }
 
-/* ---------- Every button feels responsive ---------- */
-button {
-  transition: transform 0.18s var(--ease), box-shadow 0.25s var(--ease),
-    background 0.25s, filter 0.2s, opacity 0.2s;
-}
-button:not(:disabled):hover { filter: brightness(1.1); }
-button:not(:disabled):active { transform: scale(0.97); }
-button:focus-visible { outline: 2px solid #a5b4fc; outline-offset: 2px; }
+/* ---------- Focus timer: dusty slate blue ---------- */
+.session__label { color: var(--slate); }
+.session__ring { box-shadow: 0 0 40px rgba(74, 111, 165, 0.22); animation: breathe 4s ease-in-out infinite; }
+@keyframes breathe { 50% { box-shadow: 0 0 60px rgba(74, 111, 165, 0.42); } }
+.session__inner { background: var(--card); }
+.session__time { font-size: 48px; font-weight: 700; color: var(--text); }
+.session__sub, .session__link { color: var(--muted); }
+.session__btn--pause { color: var(--text); background: var(--track); }
 
-/* ---------- Inputs ---------- */
-.add__form input, .add__form select, .courses__add input, .courses__edit {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: var(--glass-border);
-  transition: box-shadow 0.2s, border-color 0.2s;
-}
-.add__form input:focus, .add__form select:focus, .courses__add input:focus, .courses__edit:focus {
-  outline: none;
-  border-color: #818cf8;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.35);
-}
+/* ---------- Session complete ---------- */
+.done__check { background: var(--sage); box-shadow: 0 10px 24px rgba(74, 124, 89, 0.3); animation: checkPop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) backwards; }
+@keyframes checkPop { from { transform: scale(0) rotate(-20deg); opacity: 0; } }
+.done__sub, .done__meta, .done__link { color: var(--muted); }
+.done__next { background: var(--card); border: 1px solid var(--border); }
+.done__label { color: var(--sage); }
 
-/* ---------- Recalibrator card and energy sheet ---------- */
-.recal__card { border-radius: 28px; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.4); }
-.sheet__backdrop { -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); animation: fadeIn 0.25s ease both; }
-.sheet { box-shadow: 0 -20px 60px rgba(0, 0, 0, 0.4); animation: sheetUp 0.4s var(--ease) both; }
+/* ---------- Recalibrator ---------- */
+.recal__card { background: var(--card); color: var(--text); border: 1px solid var(--border); box-shadow: 0 8px 24px rgba(60, 60, 40, 0.08); }
+.recal__sub, .recal__empty, .recal__cancel { color: var(--muted); }
+.recal__option { color: var(--text); background: #F6F5F0; border-color: var(--border); }
+.recal__option--on { background: var(--sage-soft); border-color: var(--sage); color: var(--text); }
+.recal__letter { background: var(--sage); }
+.recal__note { color: var(--ochre-text); }
+
+/* ---------- Energy sheet ---------- */
+.sheet__backdrop { background: rgba(43, 43, 40, 0.4); animation: fadeIn 0.25s ease both; }
+.sheet { background: var(--card); color: var(--text); animation: sheetUp 0.4s var(--ease) both; }
+.sheet__sub, .sheet__option span, .sheet__clear { color: var(--muted); }
+.sheet__option { color: var(--text); background: #F6F5F0; }
+.sheet__option--on { background: var(--sage-soft); border-color: var(--sage); }
 @keyframes fadeIn { from { opacity: 0; } }
 @keyframes sheetUp { from { transform: translateY(100%); } }
 
-/* ---------- Floating glass navigation ---------- */
-.nav {
-  bottom: 12px;
-  width: calc(100% - 24px);
-  max-width: 396px;
-  border-radius: 22px;
-  background: rgba(15, 23, 42, 0.65);
-  border: 1px solid var(--glass-border);
-  -webkit-backdrop-filter: blur(20px);
-  backdrop-filter: blur(20px);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
-}
-.nav__tab { transition: background 0.25s, color 0.25s, transform 0.18s; }
+/* ---------- Navigation ---------- */
+.nav { bottom: 12px; width: calc(100% - 24px); max-width: 396px; background: rgba(255, 255, 255, 0.92); border: 1px solid var(--border); border-radius: 22px; box-shadow: 0 6px 20px rgba(60, 60, 40, 0.1); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
+.nav__tab { color: var(--muted); transition: background 0.25s, color 0.25s, transform 0.18s; }
+.nav__tab--on { color: #fff; background: var(--sage); box-shadow: none; }
 @media (min-width: 900px) {
-  .nav {
-    top: 0; bottom: auto; left: 0; transform: none;
-    width: 200px; max-width: none; height: 100vh;
-    border-radius: 0; border-width: 0 1px 0 0;
-  }
+  .nav { top: 0; bottom: auto; left: 0; transform: none; width: 200px; max-width: none; height: 100vh; border-radius: 0; border-width: 0 1px 0 0; box-shadow: none; }
 }
 
-/* ---------- Entrance animations ---------- */
+/* ---------- Plan ---------- */
+.plan__day { color: var(--muted); background: var(--card); border: 1px solid var(--border); }
+.plan__day strong { color: var(--text); }
+.plan__day--on { background: var(--sage); border-color: var(--sage); color: #E8F0EA; }
+.plan__day--on strong { color: #fff; }
+.plan__bar { background: var(--track); }
+.plan__fill { background: var(--sage); }
+.plan__fill--over { background: var(--ochre); }
+.plan__load, .plan__meta, .plan__empty { color: var(--muted); }
+.plan__task { background: var(--card); border: 1px solid var(--border); }
+.plan__min { color: var(--slate); }
+
+/* ---------- Courses ---------- */
+.courses__add input, .courses__edit { color: var(--text); background: var(--card); border: 1px solid var(--border); }
+.courses__add input:focus, .courses__edit:focus { outline: none; border-color: var(--sage); box-shadow: 0 0 0 3px rgba(74, 124, 89, 0.2); }
+.courses__error { color: var(--ochre-text); }
+.courses__empty, .courses__meta { color: var(--muted); }
+.courses__card { background: var(--card); border: 1px solid var(--border); }
+.courses__percent { color: var(--sage); }
+.courses__bar { background: var(--track); }
+.courses__fill { background: var(--sage); }
+.courses__btn { color: var(--text); background: #F1F0EA; }
+.courses__btn--danger { color: var(--ochre-text); background: var(--ochre-soft); box-shadow: none; border: 1px solid rgba(224, 159, 62, 0.55); }
+.courses__confirm { background: #F6F5F0; }
+
+/* ---------- Insights ---------- */
+.ins__tile, .ins__insight { background: var(--card); border: 1px solid var(--border); }
+.ins__tile strong { color: var(--sage); }
+.ins__tile span, .ins__heads, .ins__legend { color: var(--muted); }
+.ins__cell--0 { background: #EFEDE6; }
+.ins__cell--1 { background: #CFE0D4; }
+.ins__cell--2 { background: #94B9A0; }
+.ins__cell--3 { background: var(--sage); }
+.ins__cell--today { outline: 2px solid var(--slate); }
+.ins__insightlabel { color: var(--sage); }
+
+/* ---------- Add work ---------- */
+.add__sub, .add__link { color: var(--muted); }
+.add__form label { color: #55554E; }
+.add__form input, .add__form select { color: var(--text); background: var(--card); border: 1px solid var(--border); }
+.add__form input:focus, .add__form select:focus { outline: none; border-color: var(--sage); box-shadow: 0 0 0 3px rgba(74, 124, 89, 0.2); }
+.add__step { background: var(--card); border: 1px solid var(--border); }
+.add__stepmeta { color: var(--muted); }
+.add__min { color: var(--slate); }
+.add__remove { color: var(--muted); background: var(--track); }
+.add__note { color: var(--ochre-text); }
+
+/* ---------- Interactions ---------- */
+button { transition: transform 0.18s var(--ease), box-shadow 0.25s var(--ease), background 0.25s, filter 0.2s, opacity 0.2s; }
+button:not(:disabled):active { transform: scale(0.97); }
+button:focus-visible, a:focus-visible { outline: 2px solid var(--slate); outline-offset: 2px; }
+.hub__chip:hover, .demo__chip:hover, .plan__day:hover { border-color: #CFCFC6; }
+
+/* ---------- Motion ---------- */
 @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } }
 @keyframes cardIn { from { opacity: 0; transform: translateY(18px) scale(0.97); } }
 @keyframes grow { from { width: 0; } }
 @keyframes pop { from { opacity: 0; transform: scale(0.5); } }
+@keyframes ping { 0% { box-shadow: 0 0 0 0 rgba(74, 124, 89, 0.5); } 70%, 100% { box-shadow: 0 0 0 10px rgba(74, 124, 89, 0); } }
 
-/* Each screen fades up when it appears (screens are mounted fresh on tab change) */
 main > section { animation: fadeUp 0.45s var(--ease) backwards; }
-
-/* The recommendation card re-animates whenever the task changes (see 3b) */
-.hub__card { animation: cardIn 0.5s var(--ease) backwards; }
-
-/* List items stagger in */
-:is(.plan__task, .courses__card, .add__step, .ins__tile, .ins__insight) {
-  animation: fadeUp 0.55s var(--ease) backwards;
-}
+:is(.plan__task, .courses__card, .add__step, .ins__tile, .ins__insight) { animation: fadeUp 0.55s var(--ease) backwards; }
 :is(.plan__task, .courses__card, .add__step):nth-child(2) { animation-delay: 0.05s; }
 :is(.plan__task, .courses__card, .add__step):nth-child(3) { animation-delay: 0.1s; }
 :is(.plan__task, .courses__card, .add__step):nth-child(4) { animation-delay: 0.15s; }
@@ -175,64 +195,9 @@ main > section { animation: fadeUp 0.45s var(--ease) backwards; }
 :is(.plan__task, .courses__card, .add__step):nth-child(6) { animation-delay: 0.25s; }
 :is(.plan__task, .courses__card, .add__step):nth-child(7) { animation-delay: 0.3s; }
 :is(.plan__task, .courses__card, .add__step):nth-child(n + 8) { animation-delay: 0.35s; }
-
-/* Progress bars grow from zero, and animate when values change */
-.courses__fill, .plan__fill {
-  transition: width 0.9s var(--ease);
-  animation: grow 1s var(--ease) backwards;
-}
-
-/* Heatmap cells pop in one after another (the --i number is set in 3c) */
+.courses__fill, .plan__fill { transition: width 0.9s var(--ease); animation: grow 1s var(--ease) backwards; }
 .ins__cell { animation: pop 0.45s var(--ease) backwards; animation-delay: calc(var(--i, 0) * 14ms); }
 
-/* Respect people who turn animations off in their system settings */
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
-  }
+  *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
 }
-
-/* ---------- Live indicator on the recommendation label ---------- */
-.hub__label { display: flex; align-items: center; gap: 8px; }
-.hub__label::before {
-  content: '';
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--emerald);
-  animation: ping 2s ease-out infinite;
-}
-@keyframes ping {
-  0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6); }
-  70%, 100% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
-}
-
-/* ---------- Focus timer ---------- */
-.session__ring { box-shadow: 0 0 70px rgba(99, 102, 241, 0.35); animation: breathe 4s ease-in-out infinite; }
-@keyframes breathe { 50% { box-shadow: 0 0 100px rgba(139, 92, 246, 0.55); } }
-.session__inner { background: radial-gradient(circle at 50% 30%, #18213b, #0a0f1f); }
-.session__time { font-size: 52px; font-variant-numeric: tabular-nums; }
-
-/* ---------- Success screen ---------- */
-.done__check {
-  background: linear-gradient(135deg, #10b981, #059669);
-  box-shadow: 0 16px 40px rgba(16, 185, 129, 0.4);
-  animation: checkPop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
-}
-@keyframes checkPop { from { transform: scale(0) rotate(-20deg); opacity: 0; } }
-
-/* ---------- Brand header ---------- */
-.brand { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 20px; }
-.brand__logo {
-  font-family: var(--font-display);
-  font-size: 22px;
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  background: linear-gradient(90deg, #c7d2fe, #a78bfa, #38bdf8);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-.brand__date { font-size: 13px; color: #94a3b8; }
