@@ -35,6 +35,7 @@ export default function InsightsScreen({ tasks }) {
         {cells.map((c) => (
           <div
             key={c.date}
+            style={{ '--i': i }}
             title={`${dayName(c.date)} ${c.date}: ${c.minutes} min`}
             className={`ins__cell ins__cell--${c.level} ${c.isPast ? 'ins__cell--past' : ''} ${c.isToday ? 'ins__cell--today' : ''}`}
           />

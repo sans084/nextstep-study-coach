@@ -136,9 +136,15 @@ function App() {
   }
 
   return (
-    <main>
+    <main className="with-nav">
       {tab === 'today' && (
         <>
+        <header className="brand">
+          <span className="brand__logo">NextStep</span>
+          <span className="brand__date">
+            {new Date().toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'short' })}
+          </span>
+          </header>
           {notice && (
             <p style={{ margin: '0 0 16px', padding: 12, borderRadius: 12, fontSize: 14, background: '#064e3b', color: '#d1fae5' }}>
               {notice}
