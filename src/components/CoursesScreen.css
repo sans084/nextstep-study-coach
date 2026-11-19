@@ -1,8 +1,20 @@
 .courses__title { margin: 0 0 16px; font-size: 22px; }
-.courses__card { margin-bottom: 12px; padding: 16px; background: #1e293b; border-radius: 16px; }
+.courses__add { display: flex; gap: 8px; margin-bottom: 8px; }
+.courses__add input, .courses__edit { flex: 1; width: 100%; padding: 12px; font-size: 15px; font-family: inherit; color: #f8fafc; background: #1e293b; border: 1px solid #334155; border-radius: 10px; }
+.courses__add input:focus, .courses__edit:focus { outline: 2px solid #6366f1; }
+.courses__add button { padding: 0 20px; font-size: 14px; font-weight: 700; color: #fff; background: #4f46e5; border-radius: 10px; }
+.courses__error { margin: 4px 0 12px; font-size: 13px; color: #fbbf24; }
+.courses__empty { padding: 24px 0; text-align: center; color: #94a3b8; }
+.courses__card { margin: 16px 0 12px; padding: 16px; background: #1e293b; border-radius: 16px; }
 .courses__row { display: flex; justify-content: space-between; }
 .courses__name { margin: 0; font-size: 16px; font-weight: 700; }
 .courses__percent { margin: 0; font-weight: 700; color: #a5b4fc; }
 .courses__meta { margin: 4px 0 12px; font-size: 13px; color: #94a3b8; }
 .courses__bar { height: 8px; background: #334155; border-radius: 4px; overflow: hidden; }
 .courses__fill { height: 100%; background: #4f46e5; }
+.courses__actions { display: flex; gap: 8px; margin-top: 14px; }
+.courses__btn { flex: 1; padding: 10px; font-size: 13px; color: #cbd5e1; background: #334155; border-radius: 10px; }
+.courses__btn--primary { color: #fff; background: #4f46e5; }
+.courses__btn--danger { color: #fff; background: #b45309; }
+.courses__confirm { margin-top: 14px; padding: 12px; background: #0f172a; border-radius: 12px; }
+.courses__confirm p { margin: 0; font-size: 14px; }
