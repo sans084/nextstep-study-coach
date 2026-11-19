@@ -41,3 +41,113 @@ body::before {
 
 /* FocusCard.css paints the hub solid navy, which would hide the glow */
 .hub { background: transparent; }
+
+/* ---------- Glass surfaces ---------- */
+.hub__card, .hub__chip, .done__next, .plan__task, .plan__day, .courses__card,
+.ins__tile, .ins__insight, .add__step, .courses__confirm {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-card);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+}
+.plan__day--on {
+  background: var(--btn-grad);
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.45);
+}
+
+.hub__card { position: relative; overflow: hidden; padding: 28px; border-radius: 24px; }
+.hub__card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(120% 80% at 0% 0%, rgba(99, 102, 241, 0.22), transparent 60%);
+}
+.hub__card > * { position: relative; }
+.hub__chip, .courses__card, .plan__task, .ins__tile { border-radius: 16px; }
+
+/* ---------- Gradient buttons with a glow ---------- */
+.hub__start, .add__primary, .done__btn, .courses__add button,
+.courses__btn--primary, .nav__tab--on {
+  background: var(--btn-grad);
+  box-shadow: 0 10px 28px rgba(99, 102, 241, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+:is(.hub__start, .add__primary, .done__btn, .courses__add button, .courses__btn--primary):hover:not(:disabled) {
+  background: var(--btn-grad);
+  transform: translateY(-2px);
+  box-shadow: 0 14px 36px rgba(99, 102, 241, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+.recal__confirm {
+  background: linear-gradient(135deg, #10b981, #059669);
+  box-shadow: 0 10px 28px rgba(16, 185, 129, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+/* A light sweep across the main button */
+.hub__start { position: relative; overflow: hidden; border-radius: 14px; letter-spacing: 0.04em; }
+.hub__start::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 40%;
+  height: 100%;
+  pointer-events: none;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  transform: skewX(-20deg);
+  animation: sheen 4.5s ease-in-out infinite;
+}
+@keyframes sheen {
+  0%, 60% { left: -60%; }
+  100% { left: 140%; }
+}
+
+/* ---------- Every button feels responsive ---------- */
+button {
+  transition: transform 0.18s var(--ease), box-shadow 0.25s var(--ease),
+    background 0.25s, filter 0.2s, opacity 0.2s;
+}
+button:not(:disabled):hover { filter: brightness(1.1); }
+button:not(:disabled):active { transform: scale(0.97); }
+button:focus-visible { outline: 2px solid #a5b4fc; outline-offset: 2px; }
+
+/* ---------- Inputs ---------- */
+.add__form input, .add__form select, .courses__add input, .courses__edit {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--glass-border);
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+.add__form input:focus, .add__form select:focus, .courses__add input:focus, .courses__edit:focus {
+  outline: none;
+  border-color: #818cf8;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.35);
+}
+
+/* ---------- Recalibrator card and energy sheet ---------- */
+.recal__card { border-radius: 28px; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.4); }
+.sheet__backdrop { -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); animation: fadeIn 0.25s ease both; }
+.sheet { box-shadow: 0 -20px 60px rgba(0, 0, 0, 0.4); animation: sheetUp 0.4s var(--ease) both; }
+@keyframes fadeIn { from { opacity: 0; } }
+@keyframes sheetUp { from { transform: translateY(100%); } }
+
+/* ---------- Floating glass navigation ---------- */
+.nav {
+  bottom: 12px;
+  width: calc(100% - 24px);
+  max-width: 396px;
+  border-radius: 22px;
+  background: rgba(15, 23, 42, 0.65);
+  border: 1px solid var(--glass-border);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+}
+.nav__tab { transition: background 0.25s, color 0.25s, transform 0.18s; }
+@media (min-width: 900px) {
+  .nav {
+    top: 0; bottom: auto; left: 0; transform: none;
+    width: 200px; max-width: none; height: 100vh;
+    border-radius: 0; border-width: 0 1px 0 0;
+  }
+}
