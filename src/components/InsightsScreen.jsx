@@ -32,7 +32,7 @@ export default function InsightsScreen({ tasks }) {
         {['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((d, i) => <span key={i}>{d}</span>)}
       </div>
       <div className="ins__grid">
-        {cells.map((c) => (
+        {cells.map((c, i) => (
           <div
             key={c.date}
             style={{ '--i': i }}
