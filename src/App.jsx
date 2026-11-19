@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { sampleTasks, STATUS } from './data/sampleTasks'
 import { ENERGY_OPTIONS } from './data/energy'
 import { getNextTask } from './logic/priority'
 import { buildRebalanceOptions, applyOption } from './logic/recalibrator'
@@ -85,7 +84,7 @@ function App() {
     setTasks((prev) => [...prev, ...newTasks])
     const course = newTasks[0]?.course
     if (course) setCourses((prev) => (prev.includes(course) ? prev : [...prev, course]))
-      setNotice(message)
+    setNotice(message)
     setTab('today')
   }
 
