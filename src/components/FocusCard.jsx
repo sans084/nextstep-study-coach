@@ -32,7 +32,7 @@ export default function FocusCard({ task, gapMinutes, hiddenCount, energyLabel, 
         <p className="hub__gap">{gapMinutes}m free gap</p>
       </div>
 
-      <div className="hub__card">
+      <div className="hub__card" key={task.id}>
         <p className="hub__course">{task.course.toUpperCase()}</p>
         <h2 className="hub__title">{task.title}</h2>
         <p className="hub__meta">

@@ -2,9 +2,12 @@ import { dayName } from '../logic/recalibrator'
 import { toDateString } from '../logic/recalibrator'
 import { getTotals, getHeatmap, getBusiestDay, formatMinutes } from '../logic/stats'
 import './InsightsScreen.css'
+import useCountUp from '../hooks/useCountUp'
 
 export default function InsightsScreen({ tasks }) {
   const totals = getTotals(tasks)
+  const countMinutes = useCountUp(totals.doneMinutes)
+  const countTasks = useCountUp(totals.doneCount)
   const cells = getHeatmap(tasks)
   const busiest = getBusiestDay(tasks)
   const today = toDateString(new Date())
@@ -15,11 +18,11 @@ export default function InsightsScreen({ tasks }) {
 
       <div className="ins__tiles">
         <div className="ins__tile">
-          <strong>{formatMinutes(totals.doneMinutes)}</strong>
+          <strong>{formatMinutes(countMinutes)}</strong>
           <span>focus time done</span>
         </div>
         <div className="ins__tile">
-          <strong>{totals.doneCount}</strong>
+          <strong>{countTasks}</strong>
           <span>tasks done</span>
         </div>
       </div>

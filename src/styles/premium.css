@@ -151,3 +151,45 @@ button:focus-visible { outline: 2px solid #a5b4fc; outline-offset: 2px; }
     border-radius: 0; border-width: 0 1px 0 0;
   }
 }
+
+/* ---------- Entrance animations ---------- */
+@keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } }
+@keyframes cardIn { from { opacity: 0; transform: translateY(18px) scale(0.97); } }
+@keyframes grow { from { width: 0; } }
+@keyframes pop { from { opacity: 0; transform: scale(0.5); } }
+
+/* Each screen fades up when it appears (screens are mounted fresh on tab change) */
+main > section { animation: fadeUp 0.45s var(--ease) backwards; }
+
+/* The recommendation card re-animates whenever the task changes (see 3b) */
+.hub__card { animation: cardIn 0.5s var(--ease) backwards; }
+
+/* List items stagger in */
+:is(.plan__task, .courses__card, .add__step, .ins__tile, .ins__insight) {
+  animation: fadeUp 0.55s var(--ease) backwards;
+}
+:is(.plan__task, .courses__card, .add__step):nth-child(2) { animation-delay: 0.05s; }
+:is(.plan__task, .courses__card, .add__step):nth-child(3) { animation-delay: 0.1s; }
+:is(.plan__task, .courses__card, .add__step):nth-child(4) { animation-delay: 0.15s; }
+:is(.plan__task, .courses__card, .add__step):nth-child(5) { animation-delay: 0.2s; }
+:is(.plan__task, .courses__card, .add__step):nth-child(6) { animation-delay: 0.25s; }
+:is(.plan__task, .courses__card, .add__step):nth-child(7) { animation-delay: 0.3s; }
+:is(.plan__task, .courses__card, .add__step):nth-child(n + 8) { animation-delay: 0.35s; }
+
+/* Progress bars grow from zero, and animate when values change */
+.courses__fill, .plan__fill {
+  transition: width 0.9s var(--ease);
+  animation: grow 1s var(--ease) backwards;
+}
+
+/* Heatmap cells pop in one after another (the --i number is set in 3c) */
+.ins__cell { animation: pop 0.45s var(--ease) backwards; animation-delay: calc(var(--i, 0) * 14ms); }
+
+/* Respect people who turn animations off in their system settings */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
