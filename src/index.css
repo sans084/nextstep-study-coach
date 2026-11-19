@@ -13,3 +13,9 @@ body {
 }
 #root { width: 100%; max-width: 420px; padding-bottom: 90px; }
 button { font-family: inherit; cursor: pointer; border: none; }
+
+@media (min-width: 900px) {
+  #root { display: flex; justify-content: center; max-width: none; padding-bottom: 24px; }
+  main { width: 100%; max-width: 480px; }
+  main.with-nav { max-width: 720px; margin-left: 200px; } /* leaves room for the sidebar */
+}

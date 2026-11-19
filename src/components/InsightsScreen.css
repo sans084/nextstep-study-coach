@@ -17,3 +17,4 @@
 .ins__insight { padding: 16px; background: #1e293b; border-radius: 16px; }
 .ins__insight p { margin: 0; font-size: 14px; }
 .ins__insightlabel { margin-bottom: 6px !important; font-size: 11px !important; font-weight: 700; color: #a5b4fc; }
+.ins__heads, .ins__grid { max-width: 420px; }
